@@ -1,13 +1,9 @@
-import { Link } from "expo-router";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function Index() {
+export default function AboutScreen() {
   return (
     <View style={style.container}>
-      <Text style={style.textStyle}>Hello TextOverflow</Text>
-      <Link href={"/about"} style={style.button}>
-        Go to about Screen
-      </Link>
+      <Text style={style.textStyle}>About Screen</Text>
     </View>
   );
 }
@@ -21,11 +17,6 @@ const style = StyleSheet.create({
   },
 
   textStyle: {
-    color: "#fff",
-  },
-  button: {
-    fontSize: 20,
-    textDecorationLine: "underline",
     color: "#fff",
   },
 });
