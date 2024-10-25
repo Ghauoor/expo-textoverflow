@@ -1,13 +1,43 @@
-import { Link } from "expo-router";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
+
+import ImageViewer from "@/components/ImageViewer";
+import Button from "@/components/Button";
+import * as ImagePicker from "expo-image-picker";
+import { useState } from "react";
+
+const PlaceHolderImage = require("../../assets/images/background-image.png");
 
 export default function Index() {
+  const [selectedImage, setSelectedImage] = useState<string | undefined>();
+  const [showAppOptions, setShowAppOptions] = useState<boolean>(false);
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+      setShowAppOptions(!showAppOptions);
+    } else {
+      alert("No image selected");
+    }
+  };
   return (
     <View style={style.container}>
-      <Text style={style.textStyle}>Hello TextOverflow</Text>
-      <Link href={"/about"} style={style.button}>
-        Go to about Screen
-      </Link>
+      <View style={style.imageContainer}>
+        <ImageViewer imgSource={selectedImage || PlaceHolderImage} />
+      </View>
+      {showAppOptions ? (
+        <View></View>
+      ) : (
+        <View style={style.footerContainer}>
+          <Button label="Choose a Photo" theme="primary" onPress={pickImage} />
+          <Button label="Use this Photo" />
+        </View>
+      )}
     </View>
   );
 }
@@ -15,17 +45,16 @@ export default function Index() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+
     alignItems: "center",
     backgroundColor: "#25292e",
   },
 
-  textStyle: {
-    color: "#fff",
+  imageContainer: {
+    flex: 1,
   },
-  button: {
-    fontSize: 20,
-    textDecorationLine: "underline",
-    color: "#fff",
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: "center",
   },
 });
